@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Meta Tags for SEO and Responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click to Chat Pro - Instant WhatsApp Chat Launcher & Template Saver</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Click to Chat Pro: The fastest way to start WhatsApp chats without saving numbers. Includes customizable message templates and multi-device support. Optimized for professionals and businesses.">
+    <meta name="keywords" content="WhatsApp, Click to Chat, Chat Launcher, Template Saver, WhatsApp Marketing, Instant Chat, Professional Chat Tool">
+    <meta name="author" content="SK Khorrum">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#10b981', // Emerald Green
+                        'secondary': '#059669', // Darker Green
+                        'dark-bg': '#111827', // Dark Grey
+                        'card-bg': '#1f2937', // Slightly lighter Dark Grey
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-gradient {
+            background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+        }
+        .shadow-emerald {
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+        .app-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+        }
+        /* Style for mock screenshots to give them a rounded, elevated look */
+        .screenshot-mock {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border: 4px solid #374151; /* Dark border to simulate a device frame */
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-white font-sans antialiased">
+
+    <!-- Header / Navigation (Simple) -->
+    <header class="bg-card-bg shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-extrabold text-primary tracking-tight">Click to Chat Pro</a>
+            <div class="text-sm text-gray-400 hidden sm:block">
+                The Professional's WhatsApp Tool
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. Hero Section -->
+    <section class="hero-gradient py-20 md:py-32 text-center border-b border-gray-800">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight">
+                Launch WhatsApp Chats Instantly, <span class="text-primary block sm:inline">No Contacts Needed.</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                Click to Chat Pro streamlines your communication with instant chat opening and powerful, customizable message templates. Work faster, professionally.
+            </p>
+            
+            <!-- Main Call-to-Action -->
+            <a href="#" class="inline-block bg-primary hover:bg-secondary text-white text-lg font-bold px-10 py-4 rounded-xl transition-all duration-300 shadow-emerald shadow-lg transform hover:scale-105">
+                Try Click to Chat Pro Now!
+            </a>
+
+            <p class="mt-4 text-sm text-gray-500">Works seamlessly on PC, Mac, and Mobile browsers.</p>
+        </div>
+    </section>
+
+    <!-- 2. Features Section -->
+    <section class="py-16 md:py-24 bg-card-bg border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+                Features That Boost Productivity
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Feature 1: Instant Launch -->
+                <div class="app-card p-6 rounded-xl bg-gray-800 border-t-4 border-primary hover:border-secondary">
+                    <div class="text-primary mb-3 text-3xl">🚀</div>
+                    <h3 class="text-xl font-semibold mb-3">Zero Contact Save</h3>
+                    <p class="text-gray-400">Instantly open WhatsApp conversations by simply entering the number and country prefix (default **880** for Bangladesh). Keep your contacts clean.</p>
+                </div>
+
+                <!-- Feature 2: Customizable Templates -->
+                <div class="app-card p-6 rounded-xl bg-gray-800 border-t-4 border-primary hover:border-secondary">
+                    <div class="text-primary mb-3 text-3xl">📝</div>
+                    <h3 class="text-xl font-semibold mb-3">Reusable Message Templates</h3>
+                    <p class="text-gray-400">Save frequently used messages, canned responses, and custom greetings. Select one or multiple templates to pre-fill your chat instantly.</p>
+                </div>
+
+                <!-- Feature 3: Full Responsiveness -->
+                <div class="app-card p-6 rounded-xl bg-gray-800 border-t-4 border-primary hover:border-secondary">
+                    <div class="text-primary mb-3 text-3xl">💻</div>
+                    <h3 class="text-xl font-semibold mb-3">Optimized for Every Device</h3>
+                    <p class="text-gray-400">A smooth, professional experience whether you are on a desktop for heavy use or quickly sending a message from your mobile phone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 3. Screenshots/Visual Guide Section -->
+    <section class="py-16 md:py-24 bg-dark-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+                See Click to Chat Pro in Action
+            </h2>
+            
+            <div class="flex flex-col lg:flex-row justify-center items-start lg:space-x-12 space-y-12 lg:space-y-0">
+                
+                <!-- Mobile View 1: Main Interface & Launch -->
+                <div class="w-full lg:w-1/3 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-primary mb-4">1. Enter Number & Prefix</h3>
+                    <img 
+                        src="https://placehold.co/300x550/22c55e/ffffff?text=Mobile+Screenshot+1" 
+                        alt="Mobile screenshot of Click to Chat Pro number input" 
+                        class="w-64 h-auto rounded-2xl screenshot-mock"
+                        loading="lazy"
+                    >
+                    <p class="mt-4 text-gray-400 text-center text-sm">Clean interface for quick number entry.</p>
+                </div>
+
+                <!-- Mobile View 2: Template Selection -->
+                <div class="w-full lg:w-1/3 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-primary mb-4">2. Select Message Templates</h3>
+                    <img 
+                        src="https://placehold.co/300x550/065f46/ffffff?text=Mobile+Screenshot+2" 
+                        alt="Mobile screenshot of template selection in Click to Chat Pro" 
+                        class="w-64 h-auto rounded-2xl screenshot-mock"
+                        loading="lazy"
+                    >
+                    <p class="mt-4 text-gray-400 text-center text-sm">Check multiple templates to combine messages.</p>
+                </div>
+                
+                <!-- Desktop/PC View Mockup -->
+                <div class="w-full lg:w-1/3 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-primary mb-4">3. PC/Desktop Optimized</h3>
+                    <img 
+                        src="https://placehold.co/600x400/10b981/ffffff?text=Desktop+View+Mockup" 
+                        alt="Desktop view mockup of the app" 
+                        class="w-full max-w-md h-auto rounded-xl screenshot-mock"
+                        loading="lazy"
+                    >
+                    <p class="mt-4 text-gray-400 text-center text-sm">Full control on larger screens.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <!-- 4. Final CTA Banner -->
+    <section class="bg-gray-800 py-16 md:py-20 text-center border-t border-gray-700">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                Ready to Boost Your WhatsApp Workflow?
+            </h2>
+            <p class="text-lg text-gray-400 mb-8">
+                Stop wasting time saving numbers. Start chatting instantly.
+            </p>
+            <a href="#" class="inline-block bg-primary hover:bg-secondary text-white text-xl font-bold px-12 py-5 rounded-xl transition-all duration-300 shadow-emerald shadow-lg transform hover:scale-105">
+                Launch Click to Chat Pro
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-card-bg py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+            <p>&copy; 2024 Click to Chat Pro. All rights reserved.</p>
+            <p class="mt-2">
+                Designed and Developed by 
+                <a href="https://www.google.com/search?q=SK+Khorrum" target="_blank" class="text-primary hover:text-white transition-colors underline">
+                    SK Khorrum
+                </a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
