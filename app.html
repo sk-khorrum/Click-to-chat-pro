@@ -14,18 +14,15 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* --- EXTREME FIX FOR DUPLICATE RENDERING --- */
-        body {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        /* --- Global Full Screen Fix --- */
+        html, body {
             height: 100%;
-            overflow: hidden; 
             margin: 0;
+            padding: 0;
         }
-        
+
         #app-container {
+            /* This ensures the original app card remains centered when online */
             width: 100%;
             height: 100%;
             display: flex;
@@ -35,7 +32,6 @@
             box-sizing: border-box;
             overflow-y: auto; 
         }
-        /* --- END OF EXTREME FIX --- */
 
         /* Custom scrollbar for dark mode */
         .custom-scrollbar::-webkit-scrollbar {
@@ -85,89 +81,137 @@
             max-width: 400px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
+        
+        /* OFFLINE SCREEN SMART DESIGN */
+        #offline-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Use a slightly different dark background for contrast */
+            background-color: #1a1a2e; /* Deep blue-grey */
+            z-index: 100; 
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white custom-scrollbar">
 
-    <!-- Strict Centering Container -->
-    <div id="app-container" class="bg-gray-900">
-        
-        <!-- Main Card Container -->
-        <div id="app-card" class="max-w-sm w-full bg-gray-800 p-6 rounded-2xl shadow-2xl">
-
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
-                <h1 class="text-xl font-bold">Click to Chat (WhatsApp)</h1>
+    <!-- 1. OFFLINE ERROR SCREEN (Full Screen Overlay) -->
+    <div id="offline-screen">
+        <div class="p-8 rounded-2xl bg-gray-800 shadow-2xl max-w-sm w-full">
+            <div class="text-red-500 mb-6 mx-auto">
+                <!-- Custom icon for lost connection -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-red-500">
+                    <path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="2"/><line x1="17.07" y1="17.07" x2="19.8" y2="19.8"/><line x1="4.22" y1="4.22" x2="6.95" y2="6.95"/>
+                </svg>
             </div>
-
-            <!-- Info/Instructions -->
-            <div class="text-sm text-gray-400 mb-6 space-y-3">
-                <p>This app opens WhatsApp chat. Your custom message templates are saved locally on this device.</p>
-            </div>
-
-            <!-- Input Fields (Prefix and Number) -->
-            <div class="mb-6 space-y-4">
-                <div class="flex space-x-2">
-                    <div class="flex-none w-1/4">
-                        <label for="prefix" class="block text-xs font-medium text-gray-400 mb-1">Prefix</label>
-                        <!-- Default value set to 880 -->
-                        <input type="tel" id="prefix" placeholder="e.g. 44" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500" value="880">
-                    </div>
-                    <div class="flex-grow">
-                        <label for="number" class="block text-xs font-medium text-gray-400 mb-1">Number</label>
-                        <input type="tel" id="number" placeholder="1234567890" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500">
-                    </div>
-                </div>
-
-                <!-- Action Icons -->
-                <div class="flex justify-end items-center pt-2 border-t border-gray-700">
-                    <div class="flex space-x-4 text-gray-500">
-                        <!-- Clear Inputs Icon -->
-                        <i data-lucide="trash-2" class="w-5 h-5 hover:text-red-500 cursor-pointer transition-colors" onclick="clearInputs()"></i>
-                        <!-- Copy Number Icon -->
-                        <i data-lucide="copy" class="w-5 h-5 hover:text-blue-500 cursor-pointer transition-colors" onclick="copyNumber()"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Templates Section -->
-            <div class="mb-6 p-4 bg-gray-700 rounded-xl">
-                <h2 class="text-lg font-semibold mb-4 text-green-400 border-b border-green-700 pb-2 flex items-center">
-                    <i data-lucide="message-square-text" class="w-5 h-5 mr-2"></i>
-                    Message Templates
-                </h2>
-                
-                <!-- Add New Template Input -->
-                <div class="flex space-x-2 mb-4">
-                    <input type="text" id="new-template-text" placeholder="Add a new custom message..." class="input-focus flex-grow px-3 py-2 bg-gray-600 border border-gray-600 rounded-lg text-white placeholder-gray-400 transition-colors focus:outline-none focus:border-green-500">
-                    <button onclick="addTemplate()" class="flex-none bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-3 rounded-lg transition-colors flex items-center">
-                        <i data-lucide="plus" class="w-5 h-5"></i> ADD
-                    </button>
-                </div>
-
-                <!-- Templates List -->
-                <div id="templates-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar p-1">
-                    <p class="text-center text-gray-400 italic" id="loading-message">Loading templates...</p>
-                    <!-- Templates will be injected here by JavaScript -->
-                </div>
-            </div>
-            <!-- End Message Templates Section -->
-
-            <!-- Message Box for Feedback (Replaces alert()) -->
-            <div id="message-box" class="hidden p-3 mb-4 rounded-lg text-sm opacity-0 transition-opacity duration-300" role="alert" aria-live="assertive"></div>
-
-
-            <!-- OPEN Button -->
-            <button id="open-button" onclick="openChat()" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg shadow-green-900/50 flex items-center justify-center space-x-2">
-                <span>OPEN CHAT</span>
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
             
-            <!-- Custom Footer Link: "Made by SK Khorrum" with Google Search link -->
-            <div class="mt-4 text-center">
-                <a href="https://www.google.com/search?q=SK+Khorrum" target="_blank" class="text-xs text-gray-500 hover:text-green-500 transition-colors">
-                    Made by SK Khorrum
-                </a>
+            <h1 class="text-3xl font-extrabold text-white mb-2">
+                You are Offline
+            </h1>
+            <p class="text-gray-400 mb-6">
+                No internet connection detected. Please connect to a network and reload.
+            </p>
+
+            <!-- Feedback Message Box for Offline Screen -->
+            <div id="offline-message-box" class="mt-4 p-3 rounded-lg text-sm bg-red-900 text-red-200 hidden opacity-0 transition-opacity duration-300" role="alert" aria-live="assertive"></div>
+
+            <button id="reload-button" onclick="handleReloadClick()" class="mt-4 w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg shadow-green-900/50 flex items-center justify-center space-x-2">
+                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                <span>Reload Page</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- 2. MAIN APP CONTENT -->
+    <div id="main-content" class="w-full h-full">
+        <!-- Strict Centering Container (Original #app-container) -->
+        <div id="app-container" class="bg-gray-900">
+            
+            <!-- Main Card Container (Original #app-card) -->
+            <div id="app-card" class="max-w-sm w-full bg-gray-800 p-6 rounded-2xl shadow-2xl">
+
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                    <h1 class="text-xl font-bold">Click to Chat (WhatsApp)</h1>
+                </div>
+
+                <!-- Info/Instructions -->
+                <div class="text-sm text-gray-400 mb-6 space-y-3">
+                    <p>This app opens WhatsApp chat. Your custom message templates are saved locally on this device.</p>
+                </div>
+
+                <!-- Input Fields (Prefix and Number) -->
+                <div class="mb-6 space-y-4">
+                    <div class="flex space-x-2">
+                        <div class="flex-none w-1/4">
+                            <label for="prefix" class="block text-xs font-medium text-gray-400 mb-1">Prefix</label>
+                            <!-- Default value set to 880 -->
+                            <input type="tel" id="prefix" placeholder="e.g. 44" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500" value="880">
+                        </div>
+                        <div class="flex-grow">
+                            <label for="number" class="block text-xs font-medium text-gray-400 mb-1">Number</label>
+                            <input type="tel" id="number" placeholder="1234567890" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500">
+                        </div>
+                    </div>
+
+                    <!-- Action Icons -->
+                    <div class="flex justify-end items-center pt-2 border-t border-gray-700">
+                        <div class="flex space-x-4 text-gray-500">
+                            <!-- Clear Inputs Icon -->
+                            <i data-lucide="trash-2" class="w-5 h-5 hover:text-red-500 cursor-pointer transition-colors" onclick="clearInputs()"></i>
+                            <!-- Copy Number Icon -->
+                            <i data-lucide="copy" class="w-5 h-5 hover:text-blue-500 cursor-pointer transition-colors" onclick="copyNumber()"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Templates Section -->
+                <div class="mb-6 p-4 bg-gray-700 rounded-xl">
+                    <h2 class="text-lg font-semibold mb-4 text-green-400 border-b border-green-700 pb-2 flex items-center">
+                        <i data-lucide="message-square-text" class="w-5 h-5 mr-2"></i>
+                        Message Templates
+                    </h2>
+                    
+                    <!-- Add New Template Input -->
+                    <div class="flex space-x-2 mb-4">
+                        <input type="text" id="new-template-text" placeholder="Add a new custom message..." class="input-focus flex-grow px-3 py-2 bg-gray-600 border border-gray-600 rounded-lg text-white placeholder-gray-400 transition-colors focus:outline-none focus:border-green-500">
+                        <button onclick="addTemplate()" class="flex-none bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-3 rounded-lg transition-colors flex items-center">
+                            <i data-lucide="plus" class="w-5 h-5"></i> ADD
+                        </button>
+                    </div>
+
+                    <!-- Templates List -->
+                    <div id="templates-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar p-1">
+                        <p class="text-center text-gray-400 italic" id="loading-message">Loading templates...</p>
+                        <!-- Templates will be injected here by JavaScript -->
+                    </div>
+                </div>
+                <!-- End Message Templates Section -->
+
+                <!-- Message Box for Feedback (Replaces alert()) -->
+                <div id="message-box" class="hidden p-3 mb-4 rounded-lg text-sm opacity-0 transition-opacity duration-300" role="alert" aria-live="assertive"></div>
+
+
+                <!-- OPEN Button -->
+                <button id="open-button" onclick="openChat()" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg shadow-green-900/50 flex items-center justify-center space-x-2">
+                    <span>OPEN CHAT</span>
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+                
+                <!-- Custom Footer Link: "Made by SK Khorrum" with Google Search link -->
+                <div class="mt-4 text-center">
+                    <a href="https://www.google.com/search?q=SK+Khorrum" target="_blank" class="text-xs text-gray-500 hover:text-green-500 transition-colors">
+                        Made by SK Khorrum
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -190,18 +234,20 @@
         let templates = [];
         const STORAGE_KEY = 'whatsapp_chat_templates';
         
-        // Ensure Lucide icons are available
+        // Global state for message timeout
+        let messageTimeout;
+        let offlineMessageTimeout; // Separate timeout for offline screen
+
+        /**
+         * Initializes Lucide icons.
+         */
         function initializeIcons() {
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
                 lucide.createIcons();
             } else {
-                // Fallback for slower loading
                 setTimeout(initializeIcons, 100);
             }
         }
-        
-        // Global state for message timeout
-        let messageTimeout;
 
         /**
          * Shows a user feedback message. (Replaces alert())
@@ -226,6 +272,64 @@
                     msgBox.classList.add('hidden');
                 }, 300);
             }, 4000);
+        }
+        
+        /**
+         * Shows a temporary message on the dedicated offline message box.
+         */
+        function showOfflineMessage(message) {
+            const offlineMessageBox = document.getElementById('offline-message-box');
+            clearTimeout(offlineMessageTimeout);
+            
+            offlineMessageBox.textContent = message;
+            offlineMessageBox.classList.remove('hidden', 'opacity-0');
+            offlineMessageBox.classList.add('opacity-100');
+
+            offlineMessageTimeout = setTimeout(() => {
+                offlineMessageBox.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => {
+                    offlineMessageBox.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        // --- Offline/Online Handling ---
+
+        /**
+         * Handles the reload button click: checks connection before reloading.
+         */
+        window.handleReloadClick = function() {
+            if (navigator.onLine) {
+                // Connection is back, show message and reload
+                showOfflineMessage("Connection restored! Reloading page...");
+                // Wait briefly for the message to display before reloading
+                setTimeout(() => {
+                     window.location.reload();
+                }, 500);
+            } else {
+                // Still offline, show feedback message
+                showOfflineMessage("Still offline. Please check your network connection.");
+            }
+        }
+        
+        /**
+         * Updates the visibility of the content based on network status.
+         */
+        function updateConnectionStatus() {
+            const mainContent = document.getElementById('main-content');
+            const offlineScreen = document.getElementById('offline-screen');
+
+            if (navigator.onLine) {
+                // Online: Show main content, hide offline screen
+                mainContent.style.display = 'block';
+                offlineScreen.style.display = 'none';
+                document.body.classList.remove('overflow-hidden');
+            } else {
+                // Offline: Hide main content, show offline screen
+                mainContent.style.display = 'none';
+                offlineScreen.style.display = 'flex'; // Use flex to center content
+                document.body.classList.add('overflow-hidden'); // Prevent scrolling while offline
+            }
         }
 
         // --- LocalStorage Template Management ---
@@ -255,7 +359,6 @@
                     return;
                 } catch (e) {
                     console.error("Error parsing templates from localStorage:", e);
-                    // Fallback to empty array if parsing fails
                 }
             }
             templates = []; 
@@ -277,7 +380,6 @@
             }
 
             templates.forEach((item, index) => {
-                // Use array index as a simple ID for editing/deleting
                 const templateHtml = `
                     <div class="flex items-start bg-gray-700 p-2 rounded-lg hover:bg-gray-600 transition-colors">
                         <!-- Checkbox and Text -->
@@ -398,12 +500,17 @@
         }
 
 
-        // --- Core App Functions (Unchanged) ---
+        // --- Core App Functions ---
 
         /**
          * Handles the 'OPEN' button click to initiate the WhatsApp chat.
          */
         window.openChat = function() {
+            if (!navigator.onLine) {
+                showMessage('You are offline. Cannot open chat.', 'error');
+                return;
+            }
+            
             const prefixInput = document.getElementById('prefix');
             const numberInput = document.getElementById('number');
             
@@ -496,13 +603,7 @@
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
-        // Initialize App on window load
-        window.addEventListener('load', () => {
-            initializeIcons();
-            loadTemplatesFromLocalStorage(); // Load data on startup
-        });
-        
-        // Custom Modal for Delete Confirmation
+        // Custom Modal for Delete Confirmation (Replaces window.confirm)
         window.confirm = (message) => {
             const modalHtml = `
                 <div id="confirm-modal" class="modal" style="display:flex;">
@@ -534,7 +635,7 @@
             });
         };
         
-        // Custom Modal for Prompt (used during edit)
+        // Custom Modal for Prompt (Replaces window.prompt - currently not used but kept for completeness)
         window.prompt = (message, defaultValue = '') => {
             return new Promise(resolve => {
                 const modalHtml = `
@@ -569,580 +670,16 @@
             });
         };
         
-    </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click to Chat (WhatsApp) with Templates</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons for UI elements -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* --- EXTREME FIX FOR DUPLICATE RENDERING --- */
-        body {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
-            margin: 0;
-        }
-        
-        #app-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            box-sizing: border-box;
-            overflow-y: auto; 
-        }
-        /* --- END OF EXTREME FIX --- */
-
-        /* Custom scrollbar for dark mode */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1f2937; 
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #4b5563; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #6b7280; 
-        }
-        /* Focus state for green accent */
-        .input-focus:focus {
-            border-color: #10b981 !important; 
-            box-shadow: 0 0 0 1px #10b981;
-        }
-        /* Custom Checkbox Styling */
-        .template-checkbox:checked + .template-label {
-            background-color: #065f46; 
-            border-color: #10b981; 
-        }
-
-        /* Modal specific styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background-color: #1f2937; 
-            padding: 24px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white custom-scrollbar">
-
-    <!-- Strict Centering Container -->
-    <div id="app-container" class="bg-gray-900">
-        
-        <!-- Main Card Container -->
-        <div id="app-card" class="max-w-sm w-full bg-gray-800 p-6 rounded-2xl shadow-2xl">
-
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
-                <h1 class="text-xl font-bold">Click to Chat (WhatsApp)</h1>
-            </div>
-
-            <!-- Info/Instructions -->
-            <div class="text-sm text-gray-400 mb-6 space-y-3">
-                <p>This app opens WhatsApp chat. Your custom message templates are saved locally on this device.</p>
-            </div>
-
-            <!-- Input Fields (Prefix and Number) -->
-            <div class="mb-6 space-y-4">
-                <div class="flex space-x-2">
-                    <div class="flex-none w-1/4">
-                        <label for="prefix" class="block text-xs font-medium text-gray-400 mb-1">Prefix</label>
-                        <!-- Default value set to 880 -->
-                        <input type="tel" id="prefix" placeholder="e.g. 44" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500" value="880">
-                    </div>
-                    <div class="flex-grow">
-                        <label for="number" class="block text-xs font-medium text-gray-400 mb-1">Number</label>
-                        <input type="tel" id="number" placeholder="1234567890" class="input-focus w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 transition-colors focus:outline-none focus:border-green-500">
-                    </div>
-                </div>
-
-                <!-- Action Icons -->
-                <div class="flex justify-end items-center pt-2 border-t border-gray-700">
-                    <div class="flex space-x-4 text-gray-500">
-                        <!-- Clear Inputs Icon -->
-                        <i data-lucide="trash-2" class="w-5 h-5 hover:text-red-500 cursor-pointer transition-colors" onclick="clearInputs()"></i>
-                        <!-- Copy Number Icon -->
-                        <i data-lucide="copy" class="w-5 h-5 hover:text-blue-500 cursor-pointer transition-colors" onclick="copyNumber()"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Templates Section -->
-            <div class="mb-6 p-4 bg-gray-700 rounded-xl">
-                <h2 class="text-lg font-semibold mb-4 text-green-400 border-b border-green-700 pb-2 flex items-center">
-                    <i data-lucide="message-square-text" class="w-5 h-5 mr-2"></i>
-                    Message Templates
-                </h2>
-                
-                <!-- Add New Template Input -->
-                <div class="flex space-x-2 mb-4">
-                    <input type="text" id="new-template-text" placeholder="Add a new custom message..." class="input-focus flex-grow px-3 py-2 bg-gray-600 border border-gray-600 rounded-lg text-white placeholder-gray-400 transition-colors focus:outline-none focus:border-green-500">
-                    <button onclick="addTemplate()" class="flex-none bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-3 rounded-lg transition-colors flex items-center">
-                        <i data-lucide="plus" class="w-5 h-5"></i> ADD
-                    </button>
-                </div>
-
-                <!-- Templates List -->
-                <div id="templates-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar p-1">
-                    <p class="text-center text-gray-400 italic" id="loading-message">Loading templates...</p>
-                    <!-- Templates will be injected here by JavaScript -->
-                </div>
-            </div>
-            <!-- End Message Templates Section -->
-
-            <!-- Message Box for Feedback (Replaces alert()) -->
-            <div id="message-box" class="hidden p-3 mb-4 rounded-lg text-sm opacity-0 transition-opacity duration-300" role="alert" aria-live="assertive"></div>
-
-
-            <!-- OPEN Button -->
-            <button id="open-button" onclick="openChat()" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg shadow-green-900/50 flex items-center justify-center space-x-2">
-                <span>OPEN CHAT</span>
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-            
-            <!-- Custom Footer Link: "Made by SK Khorrum" with Google Search link -->
-            <div class="mt-4 text-center">
-                <a href="https://www.google.com/search?q=SK+Khorrum" target="_blank" class="text-xs text-gray-500 hover:text-green-500 transition-colors">
-                    Made by SK Khorrum
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Modal for Editing Templates (Replaces prompt()) -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <h3 class="text-xl font-bold mb-4">Edit Message Template</h3>
-            <textarea id="edit-textarea" rows="4" class="input-focus w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white resize-none focus:outline-none focus:border-green-500"></textarea>
-            <div class="flex justify-end space-x-3 mt-4">
-                <button onclick="closeEditModal()" class="px-4 py-2 bg-gray-500 hover:bg-gray-400 rounded-lg text-white font-semibold transition-colors">Cancel</button>
-                <button id="save-edit-button" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-colors">Save</button>
-            </div>
-        </div>
-    </div>
-    <!-- End Custom Modal -->
-
-    <script>
-        // Use an array to store templates locally
-        let templates = [];
-        const STORAGE_KEY = 'whatsapp_chat_templates';
-        
-        // Ensure Lucide icons are available
-        function initializeIcons() {
-            if (typeof lucide !== 'undefined' && lucide.createIcons) {
-                lucide.createIcons();
-            } else {
-                // Fallback for slower loading
-                setTimeout(initializeIcons, 100);
-            }
-        }
-        
-        // Global state for message timeout
-        let messageTimeout;
-
-        /**
-         * Shows a user feedback message. (Replaces alert())
-         */
-        function showMessage(message, type) {
-            const msgBox = document.getElementById('message-box');
-            clearTimeout(messageTimeout);
-
-            msgBox.textContent = message;
-            msgBox.classList.remove('hidden', 'bg-red-900', 'bg-green-900', 'text-red-300', 'text-green-300', 'opacity-0', 'opacity-100');
-            
-            if (type === 'error') {
-                msgBox.classList.add('bg-red-900', 'text-red-300');
-            } else {
-                msgBox.classList.add('bg-green-900', 'text-green-300');
-            }
-            msgBox.classList.add('opacity-100');
-
-            messageTimeout = setTimeout(() => {
-                msgBox.classList.replace('opacity-100', 'opacity-0');
-                setTimeout(() => {
-                    msgBox.classList.add('hidden');
-                }, 300);
-            }, 4000);
-        }
-
-        // --- LocalStorage Template Management ---
-
-        /**
-         * Saves the current templates array to localStorage.
-         */
-        function saveTemplatesToLocalStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
-                renderTemplates();
-            } catch (e) {
-                console.error("Error saving to localStorage:", e);
-                showMessage("There was an issue saving templates.", 'error');
-            }
-        }
-
-        /**
-         * Loads templates from localStorage.
-         */
-        function loadTemplatesFromLocalStorage() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try {
-                    templates = JSON.parse(stored);
-                    renderTemplates();
-                    return;
-                } catch (e) {
-                    console.error("Error parsing templates from localStorage:", e);
-                    // Fallback to empty array if parsing fails
-                }
-            }
-            templates = []; 
-            renderTemplates();
-        }
-
-        /**
-         * Renders the list of templates from the local 'templates' array.
-         */
-        function renderTemplates() {
-            const listContainer = document.getElementById('templates-list');
-            listContainer.innerHTML = ''; // Clear existing content
-            
-            document.getElementById('loading-message')?.remove();
-            
-            if (templates.length === 0) {
-                listContainer.innerHTML = '<p class="text-center text-gray-400 italic">No templates found. Add a new one!</p>';
-                return;
-            }
-
-            templates.forEach((item, index) => {
-                // Use array index as a simple ID for editing/deleting
-                const templateHtml = `
-                    <div class="flex items-start bg-gray-700 p-2 rounded-lg hover:bg-gray-600 transition-colors">
-                        <!-- Checkbox and Text -->
-                        <input type="checkbox" id="template-${index}" value="${item.text}" class="template-checkbox hidden">
-                        <label for="template-${index}" class="template-label flex items-center flex-grow cursor-pointer pr-3">
-                            <span class="w-5 h-5 border border-gray-400 rounded mr-3 flex-shrink-0 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-green-400 hidden checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </span>
-                            <!-- Use index for unique ID and data for text display -->
-                            <span class="text-sm text-gray-200 truncate" data-index="${index}">${item.text}</span>
-                        </label>
-
-                        <!-- Action Buttons -->
-                        <div class="flex flex-none space-x-2 text-gray-400">
-                            <!-- Edit Button -->
-                            <i data-lucide="pencil" class="w-4 h-4 hover:text-green-400 cursor-pointer transition-colors" onclick="window.editTemplate(${index}, '${item.text.replace(/'/g, "\\'")}')"></i>
-                            <!-- Delete Button -->
-                            <i data-lucide="trash" class="w-4 h-4 hover:text-red-500 cursor-pointer transition-colors" onclick="window.deleteTemplate(${index})"></i>
-                        </div>
-                    </div>
-                `;
-                listContainer.insertAdjacentHTML('beforeend', templateHtml);
-            });
-            
-            initializeIcons();
-            
-            // Add listener to toggle checkmark for new elements
-            document.querySelectorAll('.template-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const checkmark = this.nextElementSibling.querySelector('.checkmark');
-                    if (this.checked) {
-                        checkmark.classList.remove('hidden');
-                    } else {
-                        checkmark.classList.add('hidden');
-                    }
-                });
-            });
-        }
-
-        /**
-         * Adds a new template to the local array and saves it.
-         */
-        window.addTemplate = () => {
-            const newTemplateInput = document.getElementById('new-template-text');
-            const text = newTemplateInput.value.trim();
-
-            if (text === "") {
-                showMessage("Please write a message.", 'error');
-                return;
-            }
-
-            templates.push({ text: text });
-            saveTemplatesToLocalStorage();
-            
-            newTemplateInput.value = ''; // Clear input
-            showMessage("New template added!", 'success');
-        }
-
-        /**
-         * Opens the modal to edit an existing template.
-         * @param {number} index - The array index of the template to edit.
-         * @param {string} currentText - The current text of the template.
-         */
-        window.editTemplate = (index, currentText) => {
-            const modal = document.getElementById('edit-modal');
-            const textarea = document.getElementById('edit-textarea');
-            const saveButton = document.getElementById('save-edit-button');
-
-            textarea.value = currentText;
-            modal.style.display = 'flex'; // Show modal
-
-            // Remove previous event listener on save button
-            const newSaveButton = saveButton.cloneNode(true);
-            saveButton.parentNode.replaceChild(newSaveButton, saveButton);
-            
-            // Add new event listener with the correct index
-            newSaveButton.addEventListener('click', () => {
-                const updatedText = textarea.value.trim();
-                if (updatedText === "") {
-                    showMessage("Message cannot be empty.", 'error');
-                    return;
-                }
-                
-                // Update the local array and save
-                if (templates[index]) {
-                    templates[index].text = updatedText;
-                    saveTemplatesToLocalStorage();
-                    closeEditModal();
-                    showMessage("Template updated successfully.", 'success');
-                } else {
-                    showMessage("Template not found.", 'error');
-                }
-            });
-        }
-
-        /**
-         * Closes the edit modal.
-         */
-        window.closeEditModal = () => {
-            document.getElementById('edit-modal').style.display = 'none';
-        }
-
-        /**
-         * Deletes a template from the local array and saves it.
-         * @param {number} index - The array index of the template to delete.
-         */
-        window.deleteTemplate = async (index) => {
-            if (!await window.confirm("Are you sure you want to delete this template?")) return;
-
-            // Remove from local array
-            if (index > -1 && index < templates.length) {
-                templates.splice(index, 1);
-                saveTemplatesToLocalStorage();
-                showMessage("Template deleted.", 'success');
-            } else {
-                showMessage("Template not found.", 'error');
-            }
-        }
-
-
-        // --- Core App Functions (Unchanged) ---
-
-        /**
-         * Handles the 'OPEN' button click to initiate the WhatsApp chat.
-         */
-        window.openChat = function() {
-            const prefixInput = document.getElementById('prefix');
-            const numberInput = document.getElementById('number');
-            
-            // Sanitize input
-            const prefix = prefixInput.value.replace(/\D/g, '');
-            const number = numberInput.value.replace(/\D/g, '');
-
-            if (!prefix || !number) {
-                showMessage('Please provide both Prefix and Number.', 'error'); 
-                return;
-            }
-
-            const fullNumber = `${prefix}${number}`;
-            
-            // 1. Collect selected template texts
-            const selectedTexts = [];
-            document.querySelectorAll('.template-checkbox:checked').forEach(checkbox => {
-                selectedTexts.push(checkbox.value);
-            });
-
-            let url = `https://wa.me/${fullNumber}`;
-
-            if (selectedTexts.length > 0) {
-                // Join the selected texts with two newlines for separation in WhatsApp
-                const combinedText = selectedTexts.join('\n\n'); 
-                // URL-encode the text and append it to the URL
-                url += `?text=${encodeURIComponent(combinedText)}`;
-            }
-            
-            // Open the WhatsApp URL in a new tab (or external intent in Android WebView)
-            window.open(url, '_blank');
-            
-            showMessage('Opening chat... If the new tab does not open, please check your pop-up blocker.', 'success'); 
-        }
-
-        /**
-         * Clears all input fields and unchecks templates.
-         */
-        window.clearInputs = function() {
-            document.getElementById('prefix').value = '880'; // Resetting to 880
-            document.getElementById('number').value = '';
-            // Also uncheck all templates
-            document.querySelectorAll('.template-checkbox:checked').forEach(checkbox => {
-                checkbox.checked = false;
-                checkbox.nextElementSibling.querySelector('.checkmark')?.classList.add('hidden');
-            });
-            showMessage('Inputs and templates cleared.', 'success'); 
-        }
-
-        /**
-         * Copies the full number (prefix + number) to the clipboard.
-         */
-        window.copyNumber = function() {
-            const prefix = document.getElementById('prefix').value.replace(/\D/g, '');
-            const number = document.getElementById('number').value.replace(/\D/g, '');
-            const fullNumber = `${prefix}${number}`;
-
-            if (!fullNumber) {
-                showMessage('No number to copy.', 'error'); 
-                return;
-            }
-
-            // Using document.execCommand('copy') for better iFrame compatibility
-            const tempInput = document.createElement('input');
-            tempInput.value = fullNumber;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showMessage(`Number copied: +${fullNumber}`, 'success'); 
-                } else {
-                    showMessage('Failed to copy.', 'error');
-                }
-            } catch (err) {
-                console.error("Copy failed:", err);
-                showMessage('Failed to copy.', 'error');
-            } finally {
-                document.body.removeChild(tempInput);
-            }
-        }
-        
-        // Add event listeners for input sanitation on keyup/change
-        document.getElementById('prefix').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        });
-
-        document.getElementById('number').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        });
-
         // Initialize App on window load
         window.addEventListener('load', () => {
             initializeIcons();
             loadTemplatesFromLocalStorage(); // Load data on startup
-        });
-        
-        // Custom Modal for Delete Confirmation
-        window.confirm = (message) => {
-            const modalHtml = `
-                <div id="confirm-modal" class="modal" style="display:flex;">
-                    <div class="modal-content bg-gray-800">
-                        <h3 class="text-xl font-bold mb-4 text-white">Confirmation</h3>
-                        <p class="text-gray-300 mb-6">${message}</p>
-                        <div class="flex justify-end space-x-3">
-                            <button id="confirm-cancel" class="px-4 py-2 bg-gray-500 hover:bg-gray-400 rounded-lg text-white font-semibold transition-colors">No</button>
-                            <button id="confirm-ok" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white font-semibold transition-colors">Yes</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
             
-            return new Promise(resolve => {
-                const modal = document.getElementById('confirm-modal');
-                const okButton = document.getElementById('confirm-ok');
-                const cancelButton = document.getElementById('confirm-cancel');
-
-                okButton.onclick = () => {
-                    modal.remove();
-                    resolve(true);
-                };
-                cancelButton.onclick = () => {
-                    modal.remove();
-                    resolve(false);
-                };
-            });
-        };
-        
-        // Custom Modal for Prompt (used during edit)
-        window.prompt = (message, defaultValue = '') => {
-            return new Promise(resolve => {
-                const modalHtml = `
-                    <div id="prompt-modal" class="modal" style="display:flex;">
-                        <div class="modal-content bg-gray-800">
-                            <h3 class="text-xl font-bold mb-4 text-white">Input Required</h3>
-                            <p class="text-gray-300 mb-4">${message}</p>
-                            <input type="text" id="prompt-input" value="${defaultValue}" class="input-focus w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white focus:outline-none focus:border-green-500 mb-4">
-                            <div class="flex justify-end space-x-3">
-                                <button id="prompt-cancel" class="px-4 py-2 bg-gray-500 hover:bg-gray-400 rounded-lg text-white font-semibold transition-colors">Cancel</button>
-                                <button id="prompt-ok" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-colors">OK</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.body.insertAdjacentHTML('beforeend', modalHtml);
-                
-                const modal = document.getElementById('prompt-modal');
-                const input = document.getElementById('prompt-input');
-                const okButton = document.getElementById('prompt-ok');
-                const cancelButton = document.getElementById('prompt-cancel');
-
-                okButton.onclick = () => {
-                    const value = input.value;
-                    modal.remove();
-                    resolve(value);
-                };
-                cancelButton.onclick = () => {
-                    modal.remove();
-                    resolve(null);
-                };
-            });
-        };
+            // Initialize Offline/Online listeners
+            updateConnectionStatus(); // Initial check
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+        });
         
     </script>
 </body>
