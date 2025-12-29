@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>WhatsApp Direct Chat | Powered by SK Khorrum</title>
+    <meta name="description" content="Quickly send WhatsApp messages without saving numbers. Custom templates, 3D UI, and offline support. Created by SK Khorrum.">
+    <meta name="keywords" content="SK Khorrum, WhatsApp Direct Chat, Click to Chat, WhatsApp Template, Message Tool, SK Khorrum Apps">
+    <meta name="author" content="SK Khorrum">
+    <meta name="robots" content="index, follow">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22WhatsApp%20Chat%20SK%22,%22short_name%22:%22WAChat%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#111827%22,%22theme_color%22:%22#10b981%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/124/124034.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top left, #111827, #000000);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 3D Glassmorphism Effect */
+        .glass-card {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Animated Button */
+        .btn-3d {
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 0px #065f46;
+        }
+
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0px #065f46;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+
+        /* Floating Animation for Header */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-anim { animation: float 4s ease-in-out infinite; }
+
+        .modal-blur { backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="text-gray-100 flex items-center justify-center p-4">
+
+    <div id="main-app" class="w-full max-w-md">
+        
+        <div class="text-center mb-8 float-anim">
+            <div class="inline-block p-4 bg-green-500/10 rounded-3xl mb-4 border border-green-500/20">
+                <i data-lucide="message-circle" class="w-12 h-12 text-green-400"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white bg-clip-text">WAChat <span class="text-green-500">Direct</span></h1>
+            <p class="text-gray-400 text-sm mt-1">SEO Optimized Engine by SK Khorrum</p>
+        </div>
+
+        <div class="glass-card rounded-[2.5rem] p-8">
+            
+            <div class="space-y-5">
+                <div class="flex gap-3">
+                    <div class="w-24">
+                        <label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-2">Prefix</label>
+                        <input type="text" id="prefix" value="880" class="w-full bg-gray-900/50 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-green-500 transition-all text-center font-bold">
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-2">Phone Number</label>
+                        <input type="tel" id="number" placeholder="1712345678" class="w-full bg-gray-900/50 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-green-500 transition-all tracking-widest">
+                    </div>
+                </div>
+
+                <div class="bg-black/20 rounded-3xl p-5 border border-white/5">
+                    <h3 class="text-xs font-bold text-green-500 uppercase tracking-tighter mb-3 flex items-center">
+                        <i data-lucide="layout-list" class="w-4 h-4 mr-2"></i> Custom Templates
+                    </h3>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="new-template-text" placeholder="New quick message..." class="flex-1 bg-gray-800/50 border-none rounded-xl px-4 py-2 text-sm focus:ring-1 ring-green-500">
+                        <button onclick="addTemplate()" class="bg-green-600 p-2 rounded-xl hover:bg-green-500 transition-all">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <div id="templates-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                        </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="openChat()" class="btn-3d w-full bg-green-600 hover:bg-green-500 text-white font-extrabold py-4 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-xl">
+                        SEND MESSAGE
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="flex justify-between items-center px-2">
+                    <button onclick="clearInputs()" class="text-gray-500 hover:text-red-400 text-xs flex items-center gap-1 transition-colors">
+                        <i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset
+                    </button>
+                    <button onclick="copyNumber()" class="text-gray-500 hover:text-blue-400 text-xs flex items-center gap-1 transition-colors">
+                        <i data-lucide="copy" class="w-3 h-3"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-8 text-center">
+            <a href="https://www.google.com/search?q=SK+Khorrum" target="_blank" class="group inline-flex flex-col items-center">
+                <span class="text-gray-600 text-[10px] uppercase tracking-[0.3em]">Developer</span>
+                <span class="text-gray-400 group-hover:text-green-400 font-bold transition-all">SK KHORRUM</span>
+            </a>
+        </footer>
+    </div>
+
+    <div id="toast" class="fixed bottom-10 transform translate-y-20 opacity-0 transition-all duration-500 bg-gray-800 border border-green-500/50 px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 z-50">
+        <div id="toast-icon"></div>
+        <p id="toast-msg" class="text-sm font-medium"></p>
+    </div>
+
+    <script>
+        // PWA Installation Prompt Logic
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // You could show a "Install App" button here if you like
+        });
+
+        // Template Logic
+        let templates = JSON.parse(localStorage.getItem('wa_templates_sk')) || [
+            { text: "Hello, I'm interested in your services!" },
+            { text: "Could you please share more details?" }
+        ];
+
+        function init() {
+            lucide.createIcons();
+            renderTemplates();
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        function renderTemplates() {
+            const container = document.getElementById('templates-list');
+            container.innerHTML = '';
+            templates.forEach((t, i) => {
+                container.innerHTML += `
+                    <div class="group flex items-center bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 transition-all">
+                        <label class="flex-1 flex items-center cursor-pointer">
+                            <input type="checkbox" class="template-check hidden" value="${t.text}">
+                            <div class="check-box w-5 h-5 border-2 border-gray-600 rounded-md mr-3 flex items-center justify-center transition-all">
+                                <div class="dot w-2 h-2 bg-green-500 rounded-full scale-0 transition-all"></div>
+                            </div>
+                            <span class="text-xs text-gray-300 truncate w-48">${t.text}</span>
+                        </label>
+                        <button onclick="deleteTemplate(${i})" class="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-500 transition-all">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+            
+            // Checkbox logic
+            document.querySelectorAll('.template-check').forEach(input => {
+                input.onchange = (e) => {
+                    const box = e.target.nextElementSibling;
+                    const dot = box.querySelector('.dot');
+                    if(e.target.checked) {
+                        box.classList.add('border-green-500');
+                        dot.classList.remove('scale-0');
+                    } else {
+                        box.classList.remove('border-green-500');
+                        dot.classList.add('scale-0');
+                    }
+                }
+            });
+        }
+
+        function addTemplate() {
+            const input = document.getElementById('new-template-text');
+            if(!input.value) return;
+            templates.push({ text: input.value });
+            localStorage.setItem('wa_templates_sk', JSON.stringify(templates));
+            input.value = '';
+            renderTemplates();
+            showToast("Template added!");
+        }
+
+        function deleteTemplate(i) {
+            templates.splice(i, 1);
+            localStorage.setItem('wa_templates_sk', JSON.stringify(templates));
+            renderTemplates();
+        }
+
+        function openChat() {
+            const prefix = document.getElementById('prefix').value.replace(/\D/g,'');
+            const num = document.getElementById('number').value.replace(/\D/g,'');
+            if(!num) { showToast("Enter a number!", "error"); return; }
+
+            let selected = [];
+            document.querySelectorAll('.template-check:checked').forEach(c => selected.push(c.value));
+            
+            let url = `https://wa.me/${prefix}${num}`;
+            if(selected.length > 0) url += `?text=${encodeURIComponent(selected.join(' '))}`;
+            
+            window.open(url, '_blank');
+        }
+
+        function copyNumber() {
+            const prefix = document.getElementById('prefix').value;
+            const num = document.getElementById('number').value;
+            navigator.clipboard.writeText(`${prefix}${num}`);
+            showToast("Copied to clipboard!");
+        }
+
+        function clearInputs() {
+            document.getElementById('number').value = '';
+            showToast("Reset completed");
+        }
+
+        // Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
