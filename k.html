@@ -1,0 +1,65 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "WAChat Direct by SK Khorrum",
+  "operatingSystem": "Android, iOS, Windows",
+  "applicationCategory": "CommunicationApplication",
+  "author": {
+    "@type": "Person",
+    "name": "SK Khorrum"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<style>
+    /* Dynamic Gradient & Glow */
+    :root {
+        --primary-glow: conic-gradient(from 180deg at 50% 50%, #10b981 0deg, #059669 90deg, #34d399 180deg, #064e3b 270deg, #10b981 360deg);
+    }
+
+    /* 3D Moving Background */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: var(--primary-glow);
+        filter: blur(100px);
+        opacity: 0.15;
+        z-index: -1;
+        animation: move 10s infinite alternate;
+    }
+
+    @keyframes move {
+        from { top: 0; left: 0; }
+        to { top: 50%; left: 50%; }
+    }
+
+    /* Premium Button Style */
+    .btn-3d-premium {
+        background: linear-gradient(145deg, #10b981, #059669);
+        box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4),
+                    inset 0 -4px 0 rgba(0,0,0,0.2),
+                    inset 0 2px 0 rgba(255,255,255,0.2);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Template Card Hover */
+    .template-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .template-item:hover {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        transform: scale(1.02);
+    }
+</style>
