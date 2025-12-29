@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click to Chat Pro | Ultimate WhatsApp Productivity Tool for Windows, Mac, Linux & Mobile</title>
+    <title>Click to Chat Pro | No-Save WhatsApp Chat & Template Marketing Tool</title>
     
-    <meta name="description" content="Unlock seamless communication with Click to Chat Pro. The ultimate cross-platform WhatsApp launcher. No contact saving required. Featuring 3D interface, custom templates, and enterprise-grade SEO optimization for professionals.">
-    <meta name="keywords" content="WhatsApp Direct Chat, WhatsApp Marketing Tool, No Save Contact WhatsApp, Click to Chat Pro, Business Communication Automation, WhatsApp Web Tool, SK Khorrum">
-    <meta name="author" content="SK Khorrum">
-    <meta property="og:title" content="Click to Chat Pro - Professional WhatsApp Workflow">
-    <meta property="og:description" content="Start WhatsApp chats instantly on any device without cluttering your contact list.">
-    <meta property="og:type" content="website">
+    <meta name="description" content="Click to Chat Pro provides the fastest way to send WhatsApp messages without saving numbers. Create instant chat links and reuse custom message templates for professional marketing. Developed by SK KHORRUM.">
+    <meta name="keywords" content="WhatsApp Link Generator, WhatsApp Marketing Tool, Message Without Saving Number, Custom WhatsApp Templates, SK KHORRUM SEO, Click to Chat Pro, Direct Message WhatsApp">
+    <meta name="author" content="SK KHORRUM">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;800&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -22,9 +19,9 @@
             theme: {
                 extend: {
                     colors: {
-                        'primary': '#10b981',
-                        'accent': '#34d399',
-                        'glass': 'rgba(255, 255, 255, 0.03)',
+                        'wa-green': '#25D366',
+                        'wa-dark': '#075E54',
+                        'premium-black': '#0a0a0a',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -36,126 +33,106 @@
     </script>
 
     <style>
-        :root { --glow: rgba(16, 185, 129, 0.4); }
-        body { background-color: #05070a; overflow-x: hidden; }
+        body { background-color: #050505; color: #e5e7eb; overflow-x: hidden; }
+        #canvas-container { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
         
-        #canvas-container {
-            position: fixed; top: 0; left: 0; z-index: -1;
-            width: 100%; height: 100%;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .glass-morphism {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .glass-card:hover {
+            border-color: #25D366;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(37, 211, 102, 0.15);
         }
-
-        .hero-text-gradient {
-            background: linear-gradient(to right, #ffffff, #10b981, #34d399);
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #25D366);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        .floating-3d {
-            animation: float 6s ease-in-out infinite;
-            perspective: 1000px;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-20px) rotateX(5deg); }
-        }
-
-        .card-hover:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 0 30px var(--glow);
-            border-color: #10b981;
-        }
     </style>
 </head>
-<body class="text-gray-200">
+<body>
 
     <div id="canvas-container"></div>
 
-    <nav class="fixed w-full z-50 glass-morphism border-b border-white/10">
+    <nav class="fixed w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-bold text-black">C</div>
-                <span class="text-xl font-display font-extrabold tracking-tighter">ClickChat<span class="text-primary">PRO</span></span>
+                <div class="w-10 h-10 bg-wa-green rounded-xl flex items-center justify-center shadow-lg shadow-wa-green/20">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.319 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.438-9.889 9.886-.001 2.225.613 3.91 1.72 5.824l-.942 3.443 3.526-.925c.001 0 .001 0 0 0z"/></svg>
+                </div>
+                <span class="text-xl font-display font-extrabold tracking-tight">ClickChat<span class="text-wa-green">PRO</span></span>
             </div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#features" class="hover:text-primary transition">Features</a>
-                <a href="#seo-article" class="hover:text-primary transition">Why Us?</a>
-                <a href="#download" class="hover:text-primary transition">Download</a>
-            </div>
-            <a href="https://click-to-chat-pro.vercel.app/app.html" class="bg-primary hover:bg-accent text-black px-5 py-2 rounded-full font-bold text-sm transition">Launch Web App</a>
+            <a href="https://click-to-chat-pro.vercel.app/app.html" class="hidden sm:block text-sm font-semibold hover:text-wa-green transition">Start Chatting →</a>
         </div>
     </nav>
 
-    <section class="relative pt-32 pb-20 px-6">
-        <div class="max-w-7xl mx-auto text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase mb-6 border border-primary/20">
-                Next-Gen Communication Tool
-            </span>
-            <h1 class="text-5xl md:text-8xl font-display font-extrabold mb-6 leading-none hero-text-gradient">
-                Chat Without <br> Boundaries.
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-display font-extrabold mb-8 text-gradient leading-tight">
+                WhatsApp Marketing <br> Without Saving Numbers.
             </h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                Experience the ultimate 3D-integrated WhatsApp launcher. Designed for professionals on <b>Windows, macOS, Linux, and Mobile</b>. No contacts, no friction, just speed.
+            <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto">
+                অপরিচিত নাম্বার সেভ করার ঝামেলা শেষ! <strong>Click to Chat Pro</strong> এর মাধ্যমে যেকোনো নাম্বারে সরাসরি মেসেজ পাঠান। একবার মেসেজ লিখে টেম্পলেট হিসেবে সেভ করে রাখুন এবং বারবার ব্যবহার করুন। 
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="Click to chat pro.apk" class="bg-primary text-black px-10 py-4 rounded-2xl font-extrabold text-lg shadow-emerald shadow-2xl hover:scale-105 transition-transform">
-                    Download APK (Android)
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="https://click-to-chat-pro.vercel.app/app.html" class="bg-wa-green hover:bg-emerald-400 text-black px-10 py-4 rounded-full font-extrabold text-lg transition-all transform hover:scale-105 shadow-xl shadow-wa-green/20">
+                    Use Web Version
                 </a>
-                <a href="https://click-to-chat-pro.vercel.app/app.html" class="glass-morphism px-10 py-4 rounded-2xl font-extrabold text-lg hover:bg-white/5 transition">
-                    Open Web Pro
+                <a href="Click to chat pro.apk" class="glass-card px-10 py-4 rounded-full font-extrabold text-lg hover:bg-white/10 transition-all">
+                    Download APK
                 </a>
             </div>
+        </div>
+    </section>
 
-            <div class="mt-20 relative max-w-5xl mx-auto floating-3d">
-                <img src="click-to-chat-pro2.png" alt="Multi-device Dashboard" class="rounded-3xl shadow-2xl border border-white/10">
-                <div class="absolute -bottom-10 -right-10 hidden lg:block w-64 glass-morphism p-4 rounded-2xl border-primary/30">
-                    <p class="text-xs text-primary font-bold mb-1">REAL-TIME SYNC</p>
-                    <p class="text-sm">Your templates are always ready, across every OS.</p>
+    <section class="py-24 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold mb-6">স্মার্ট মার্কেটিং এবং কুইক মেসেজিং এর জন্য সেরা সমাধান</h2>
+                <div class="space-y-6 text-gray-400 leading-relaxed">
+                    <p>
+                        বর্তমান সময়ে হোয়াটসঅ্যাপ মার্কেটিং এর জন্য সবচেয়ে বড় বাধা হলো কন্টাক্ট সেভ করা। <strong>SK KHORRUM</strong> এর ডিজাইনে তৈরি এই টুলটি আপনার এই সমস্যার স্থায়ী সমাধান। আপনি সরাসরি নাম্বার টাইপ করে চ্যাট শুরু করতে পারবেন যা আপনার সময় বাঁচাবে এবং ফোনের মেমোরি কন্টাক্টে ভরবে না।
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-wa-green font-bold">✔</span>
+                            <p><strong class="text-white">নাম্বার সেভ ছাড়া চ্যাট:</strong> যেকোনো দেশের নাম্বার দিয়ে মুহূর্তেই হোয়াটসঅ্যাপ চ্যাট শুরু করুন।</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-wa-green font-bold">✔</span>
+                            <p><strong class="text-white">কাস্টম মেসেজ টেম্পলেট:</strong> আপনার প্রয়োজনীয় মার্কেটিং মেসেজগুলো সেভ করে রাখুন। বারবার টাইপ করার প্রয়োজন নেই, শুধু এক ক্লিকেই মেসেজ রেডি!</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-wa-green font-bold">✔</span>
+                            <p><strong class="text-white">মাল্টি-ডিভাইস সাপোর্ট:</strong> পিসি, ম্যাক বা অ্যান্ড্রয়েড—সবখানে সমানভাবে কার্যকর।</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="seo-article" class="py-24 bg-black/50">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-3xl md:text-5xl font-display font-bold mb-12 text-center">Revolutionizing Digital Outreach</h2>
             
-            <article class="prose prose-invert lg:prose-xl text-gray-400 leading-loose space-y-8">
-                <p>
-                    In the fast-paced world of digital marketing and client relations, the "Save Contact" barrier is a major bottleneck. <strong>Click to Chat Pro</strong> is engineered to eliminate this friction. By utilizing the official WhatsApp API integration, our tool allows users on <strong>Linux, Windows, and MacOS</strong> to bypass traditional mobile limitations.
-                </p>
-                
-                <h3 class="text-white text-2xl font-bold">Why Professionals Choose Click to Chat Pro?</h3>
-                <ul class="list-disc list-inside space-y-4">
-                    <li><strong class="text-primary">Privacy First:</strong> Stop cluttering your personal phone book with one-time business leads.</li>
-                    <li><strong class="text-primary">Multi-Message Templates:</strong> Our unique algorithm allows you to stack templates, creating a personalized message in seconds.</li>
-                    <li><strong class="text-primary">Cross-Platform Core:</strong> Unlike standard apps, our architecture is optimized for Chrome, Safari, and Firefox, ensuring native-like performance on any desktop environment.</li>
-                </ul>
-
-                <p>
-                    Whether you are a developer on <strong>Linux</strong> needing to send quick logs via WhatsApp, or a <strong>Real Estate Agent</strong> sending dozens of brochures daily, Click to Chat Pro scales with your needs. Our latest V2.0 update introduces 3D-accelerated UI elements, reducing eye strain during long working hours.
-                </p>
-            </article>
+            <div class="grid grid-cols-1 gap-4">
+                <div class="glass-card p-8 rounded-3xl">
+                    <h3 class="text-wa-green font-bold text-xl mb-3">SEO Expert Insights</h3>
+                    <p class="text-sm text-gray-400">এই প্ল্যাটফর্মটি এমনভাবে অপ্টিমাইজ করা হয়েছে যাতে গুগল সার্চে দ্রুত র‍্যাঙ্ক করে। <strong>DRT SEO Expert SK KHORRUM</strong> এর মাধ্যমে এটি হাই-পারফরম্যান্স ব্যাকএন্ড এবং ক্লিন কোডিং নিশ্চিত করে।</p>
+                </div>
+                <img src="click-to-chat-pro1.png" alt="App Preview" class="rounded-2xl shadow-2xl border border-white/10 rotate-2 hover:rotate-0 transition-transform duration-500">
+            </div>
         </div>
     </section>
 
-    <footer class="py-12 glass-morphism">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-            <div>
-                <p class="text-sm text-gray-500">© 2025 Click to Chat Pro. Advanced Enterprise Edition.</p>
-                <p class="text-xs text-gray-600">Engineered for perfection by SK Khorrum.</p>
-            </div>
-            <div class="flex space-x-6 text-xs font-bold uppercase tracking-widest">
-                <a href="#" class="hover:text-primary">Security</a>
-                <a href="#" class="hover:text-primary">API Docs</a>
-                <a href="#" class="hover:text-primary">Contact Support</a>
+    <footer class="py-12 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+            <p class="text-gray-500 text-sm mb-4">© 2024 Click to Chat Pro. All Rights Reserved.</p>
+            <div class="text-lg font-medium">
+                Designed & Developed for SEO by 
+                <a href="https://www.google.com/search?q=sk+khorrum" target="_blank" class="text-wa-green hover:underline decoration-2 underline-offset-4 font-extrabold tracking-wide">
+                    SK KHORRUM
+                </a>
             </div>
         </div>
     </footer>
@@ -163,21 +140,39 @@
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-        const material = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.1 });
-        const torus = new THREE.Mesh(geometry, material);
-        scene.add(torus);
+        const particles = [];
+        const particleCount = 15;
 
-        camera.position.z = 30;
+        for(let i=0; i<particleCount; i++) {
+            const geometry = new THREE.SphereGeometry(Math.random() * 0.5 + 0.2, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x25D366, 
+                transparent: true, 
+                opacity: Math.random() * 0.3 
+            });
+            const sphere = new THREE.Mesh(geometry, material);
+            
+            sphere.position.x = (Math.random() - 0.5) * 40;
+            sphere.position.y = (Math.random() - 0.5) * 40;
+            sphere.position.z = (Math.random() - 0.5) * 20;
+            
+            scene.add(sphere);
+            particles.push(sphere);
+        }
+
+        camera.position.z = 20;
 
         function animate() {
             requestAnimationFrame(animate);
-            torus.rotation.x += 0.001;
-            torus.rotation.y += 0.002;
+            particles.forEach(p => {
+                p.position.y += 0.02;
+                if(p.position.y > 20) p.position.y = -20;
+                p.rotation.x += 0.01;
+            });
             renderer.render(scene, camera);
         }
 
